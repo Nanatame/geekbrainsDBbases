@@ -1,0 +1,75 @@
+Создала конфигурационный файл my.cnf, но использовать его не удается. Видимо, он неправильно читает пароль, так как в нем есть символ `. 
+
+Далее действия по дампу таблицы example и заливке дампа в базу sample, а также проверка результата:
+
+C:\Users\voron>mysqldump -u root -p example > testdump.sql
+Enter password: ************
+
+
+C:\Users\voron>mysql -u root -p
+Enter password: ************
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 24
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> create database sample;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> exit
+Bye
+
+C:\Users\voron>mysql -u root -p sample < testdump.sql
+Enter password: ************
+
+C:\Users\voron>mysql -u root -p
+Enter password: ************
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 27
+Server version: 8.0.22 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2020, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| example            |
+| information_schema |
+| mysql              |
+| performance_schema |
+| sample             |
+| sys                |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> use sample;
+Database changed
+mysql> show tables;
++------------------+
+| Tables_in_sample |
++------------------+
+| users            |
++------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from users;
++------+------+
+| id   | name |
++------+------+
+|    1 | Anna |
++------+------+
+1 row in set (0.00 sec)
